@@ -1,0 +1,23 @@
+
+
+//return the address of the string
+char* reverse(char *S, int len)
+{
+    //code here
+    stack<char> ans;
+    
+    for(int i = 0; i < len; i++ )
+    {
+        ans.push(S[i]);
+    }
+    
+    int k = 0;
+    while( !ans.empty() )
+    {
+        S[k++] = ans.top();
+        ans.pop();
+        
+    }
+    
+    return S;
+}
