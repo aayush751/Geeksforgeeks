@@ -116,20 +116,27 @@ struct Node
    20       30 */
    
 
- 
+void solve( Node* root, int &count )
+{
+    if( root == nullptr )
+    {
+        return;
+    }
+    
+    if( root -> left == nullptr and root -> right == nullptr )
+    {
+        count++;
+        return;
+    }
+    
+    solve( root -> left, count );
+    solve( root -> right, count );
+    return;
+}
 int countLeaves(Node* root)
 {
   // Your code here
-  
-  if( root == nullptr )
-  {
-      return 0;
-  }
-  
-  if( root -> left == nullptr and root -> right == nullptr )
-  {
-      return 1;
-  }
-  
-  return countLeaves( root -> left ) + countLeaves( root -> right );
+  int count = 0;
+  solve( root, count );
+  return count;
 }
