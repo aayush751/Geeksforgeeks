@@ -7,26 +7,32 @@ using namespace std;
 // User function Template for C++
 class Solution {
   public:
+  
+    int solve( int n, vector< int >&memo, int mod )
+    {
+        // base case
+        if( n <= 1 )
+        {
+            return n;
+        }
+        
+        // memo[0] = 1;
+        // memo[1] = 1;
+        
+        if( memo[n] != -1 )
+        {
+            return memo[n] % mod;
+        }
+        
+        memo[n] = ( solve( n - 1 , memo, mod ) % mod + solve( n - 2, memo, mod ) % mod ) % mod;
+        
+        return memo[n];
+    }
     int nthFibonacci(int n){
         // code here
-        int mod = 1000000007;
-        if( n == 1 or n == 2 )
-        {
-            return 1;
-        }
         
-        n = n - 2;
-        int next, curr = 1, prev = 1;
-        
-        while( n )
-        {
-            next = curr + prev % mod;
-            prev = curr % mod;
-            curr = next % mod;
-            n--;
-        }
-        
-        return next % mod;
+        vector< int > memo( n + 1, -1 );
+        return solve( n, memo, 1000000007 );
     }
 };
 
