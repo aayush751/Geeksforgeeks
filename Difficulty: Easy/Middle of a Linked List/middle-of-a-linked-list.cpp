@@ -1,8 +1,11 @@
 //{ Driver Code Starts
-// Initial template for C++
-
-#include <bits/stdc++.h>
+#include <iostream>
+#include <sstream>
+#include <string>
+#include <vector>
 using namespace std;
+
+// Initial template for C++
 
 struct Node {
     int data;
@@ -37,15 +40,16 @@ struct Node {
 }; */
 class Solution {
   public:
-    /* Should return data of middle node. If linked list is empty, then  -1*/
-    int getMiddle(Node *head) {
-        // Your code here
-        Node* slow = head, *fast = head;
+    /* Should return data of middle node. If linked list is empty, then -1 */
+    int getMiddle(Node* head) {
+        // code here
+        Node* slow = head;
+        Node* fast = head;
         
         while( fast and fast -> next )
         {
-            fast = fast -> next -> next;
             slow = slow -> next;
+            fast = fast -> next -> next;
         }
         
         return slow -> data;
@@ -56,18 +60,31 @@ class Solution {
 //{ Driver Code Starts.
 
 int main() {
-    // code
+
     int t;
     cin >> t;
+    cin.ignore(); // Ignore the newline character after reading t
+
     while (t--) {
-        int N;
-        cin >> N;
-        int data;
-        cin >> data;
+        vector<int> arr;
+        string input;
+        getline(cin, input);
+        stringstream ss(input);
+        int number;
+        while (ss >> number) {
+            arr.push_back(number);
+        }
+
+        if (arr.empty()) {
+            cout << -1 << endl;
+            continue;
+        }
+
+        int data = arr[0];
         struct Node* head = new Node(data);
         struct Node* tail = head;
-        for (int i = 0; i < N - 1; ++i) {
-            cin >> data;
+        for (int i = 1; i < arr.size(); ++i) {
+            data = arr[i];
             tail->next = new Node(data);
             tail = tail->next;
         }
@@ -75,6 +92,7 @@ int main() {
         Solution ob;
         cout << ob.getMiddle(head) << endl;
     }
+
     return 0;
 }
 
