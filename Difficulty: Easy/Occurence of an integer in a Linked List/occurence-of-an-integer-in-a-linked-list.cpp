@@ -37,7 +37,10 @@ class Solution {
         
         while( i )
         {
-            ( i -> data == key ? freq++ : freq );
+            if( i -> data == key )
+            {
+                freq++;
+            }
             i = i -> next;
         }
         
@@ -71,6 +74,7 @@ int main() {
         cin.ignore();
         Solution ob;
         cout << ob.count(head, key) << endl;
+        cout << "~" << endl;
     }
     return 0;
 }
