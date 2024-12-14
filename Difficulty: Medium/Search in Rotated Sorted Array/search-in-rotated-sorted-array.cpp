@@ -6,66 +6,48 @@ using namespace std;
 // } Driver Code Ends
 class Solution {
   public:
-  
-    int binarySearch( vector<int> &arr, int low, int high, int key )
-    {
-        // int low = 0, high = arr.size() - 1;
-        int mid = low + ( high - low ) / 2;
+    int search(vector<int>& arr, int key) {
+        // complete the function here
+        int n = arr.size();
         
-        while( low <= high )
+        int l = 0, r = n - 1;
+        
+        while( l <= r )
         {
-            if( arr[mid] > key )
-            {
-                high = mid - 1;
-            }
-            else if( arr[mid] == key )
+            int mid = l + ( r - l ) / 2;
+            
+            // agr left part sorted hai toh kya krna hai 
+            if( arr[mid] == key )
             {
                 return mid;
             }
+            
+            
+            if( arr[l] <= arr[mid] )
+            {
+                if( arr[l] <= key and key <= arr[mid] )
+                {
+                    r = mid - 1;
+                }
+                else
+                {
+                    l = mid + 1;
+                }
+            }
             else
             {
-                low = mid + 1;
+                if( arr[mid] <= key and key <= arr[r] )
+                {
+                    l = mid + 1;
+                }
+                else
+                {
+                    r = mid - 1;
+                }
             }
-            mid = low + ( high - low ) / 2;
         }
         
         return -1;
-    }
-    
-    int pivot( vector<int> &arr )
-    {
-        int low = 0, high = arr.size() - 1;
-        int mid = low + ( high - low ) / 2;
-        
-        while( low < high )
-        {
-            if( arr[0] <= arr[mid] )
-            {
-                low = mid + 1;
-            }
-            else
-            {
-                high = mid;
-            }
-            mid = low + ( high - low ) / 2;
-        }
-        
-        return low;
-    }
-    int search(vector<int>& arr, int key) {
-        // complete the function here
-        int n = arr.size() - 1;
-        int pivotIndex = pivot( arr );
-        int result = 0;
-        
-        if( arr[0] <= key and key <= arr[pivotIndex - 1] )
-        {
-            return binarySearch( arr, 0, pivotIndex - 1, key );
-        }
-        else
-        {
-            return binarySearch( arr, pivotIndex, n, key );
-        }
     }
 };
 
@@ -87,6 +69,7 @@ int main() {
         cin >> key;
         Solution ob;
         cout << ob.search(arr, key) << endl;
+        cout << "~" << endl;
     }
     return 0;
 }
