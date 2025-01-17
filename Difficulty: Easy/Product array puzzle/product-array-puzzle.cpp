@@ -1,6 +1,4 @@
 //{ Driver Code Starts
-// Initial template for C++
-
 #include <bits/stdc++.h>
 using namespace std;
 
@@ -10,80 +8,93 @@ using namespace std;
 
 class Solution {
   public:
-  
-    #define ll long long int
-    // nums: given vector
-    // return the Product vector P that hold product except self at each index
-    vector<long long int> productExceptSelf(vector<long long int>& nums) {
-
+    vector<int> productExceptSelf(vector<int>& arr) {
         // code here
-        long long int totalProduct = 1;
-        ll size = nums.size();
-        vector< ll > ans( size );
-        ll zeroCnt = count( nums.begin(), nums.end(), 0 );
+        int n = arr.size();
+        int zeroCount = 0;
         
-        if( zeroCnt == 1 or zeroCnt == 0 )
+        for( int& ele: arr )
         {
-            for(auto i: nums )
+            if( ele == 0 )
             {
-                if( i != 0 )
+                zeroCount++;
+            }
+        }
+        
+        vector< int > productArray( n , 0 );
+        
+        if( zeroCount > 1 ) return productArray;
+        
+        int totalProduct = 1;
+        
+        if( zeroCount == 0 )
+        {
+            for( int& ele: arr )
+            {
+                totalProduct *= ele;
+            }
+            
+            for( int i = 0; i < n; i++ )
+            {
+                productArray[i] = totalProduct / arr[i];
+            }
+            
+            return productArray;
+        }
+        
+        if( zeroCount == 1 )
+        {
+            int zeroIndex = -1;
+            for( int i = 0; i < n; i++ )
+            {
+                if( arr[i] != 0 )
                 {
-                    totalProduct *= i;
+                    totalProduct *= arr[i];
+                }
+                else
+                {
+                    zeroIndex = i;
                 }
             }
-        }
-        else if( zeroCnt > 1 )
-        {
-            totalProduct = 0;
+            
+            productArray[zeroIndex] = totalProduct;
         }
         
-        for(ll i = 0; i < size; i++ )
-        {
-            if( zeroCnt == 1 )
-            {
-                if( nums[i] == 0 )
-                {
-                    ans[i] = totalProduct;
-                }
-            }
-            else if( zeroCnt == 0 )
-            {
-                ans[i] = totalProduct / nums[i];
-            }
-            else
-            {
-                return ans;
-            }
-        }
-        
-        return ans;
-        
+        return productArray;
     }
 };
 
 
 //{ Driver Code Starts.
+
 int main() {
-    int t; // number of test cases
+
+    int t;
     cin >> t;
+    cin.ignore();
+
     while (t--) {
-        int n; // size of the array
-        cin >> n;
-        vector<long long int> arr(n), vec(n);
+        vector<int> arr;
+        string input;
+        getline(cin, input);
+        stringstream ss(input);
+        int number;
 
-        for (int i = 0; i < n; i++) // input the array
-        {
-            cin >> arr[i];
+        while (ss >> number) {
+            arr.push_back(number);
         }
-        Solution obj;
-        vec = obj.productExceptSelf(arr); // function call
 
-        for (int i = 0; i < n; i++) // print the output
-        {
-            cout << vec[i] << " ";
+        Solution obj;
+        vector<int> res = obj.productExceptSelf(arr);
+
+        for (int i = 0; i < res.size(); i++) {
+            cout << res[i] << " ";
         }
         cout << endl;
+        cout << "~\n";
     }
+
     return 0;
 }
+
 // } Driver Code Ends
