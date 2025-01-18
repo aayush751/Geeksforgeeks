@@ -1,8 +1,17 @@
 //{ Driver Code Starts
-// Initial Template for C++// C program to find n'th Node in linked list
+// Initial Template for C++
+#include <algorithm>
+#include <bits/stdc++.h>
+#include <cmath>
+#include <cstdio>
+#include <ios>
 #include <iostream>
+#include <random>
+#include <sstream>
 #include <stdio.h>
 #include <stdlib.h>
+#include <string>
+#include <vector>
 using namespace std;
 
 /* Link list Node */
@@ -30,10 +39,8 @@ struct Node
 
 class Solution {
   public:
-    // Function to reverse a linked list.
-    struct Node* reverseList(struct Node* head) {
+    Node* reverseList(struct Node* head) {
         // code here
-        // return head of reversed list
         Node* prev = nullptr, *curr = head, *next;
         
         while( curr )
@@ -52,8 +59,8 @@ class Solution {
 
 //{ Driver Code Starts.
 
-void printList(struct Node *head) {
-    struct Node *temp = head;
+void printList(Node *head) {
+    Node *temp = head;
     while (temp != NULL) {
         printf("%d ", temp->data);
         temp = temp->next;
@@ -64,20 +71,27 @@ void printList(struct Node *head) {
 int main() {
     int T, n, l, firstdata;
     cin >> T;
-
+    cin.ignore();
     while (T--) {
-        struct Node *head = NULL, *tail = NULL;
+        Node *head = NULL, *tail = NULL;
 
-        cin >> n;
-
+        vector<int> arr;
+        string input;
+        getline(cin, input);
+        stringstream ss(input);
+        int number;
+        while (ss >> number) {
+            arr.push_back(number);
+        }
+        int index = 0;
+        n = arr.size();
         if (n != 0) {
-            cin >> firstdata;
-            head = new Node(firstdata);
+            head = new Node(arr[0]);
             tail = head;
         }
 
         for (int i = 1; i < n; i++) {
-            cin >> l;
+            l = arr[i];
             tail->next = new Node(l);
             tail = tail->next;
         }
@@ -87,6 +101,7 @@ int main() {
 
         printList(head);
         cout << endl;
+        cout << "~\n";
     }
     return 0;
 }
