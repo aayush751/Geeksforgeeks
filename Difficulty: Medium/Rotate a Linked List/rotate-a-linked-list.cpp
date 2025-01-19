@@ -38,74 +38,60 @@ struct Node {
 
 class Solution {
   public:
-    // Function to rotate a linked list.
     Node* rotate(Node* head, int k) {
         // Your code here
-        if( head -> next == nullptr )
-        {
-            return head;
-        }
-        int beforeCnt = 1;
-        int afterCnt = 0;
-        Node* i = head;
-        Node* j = head;
+        
+        int listSize = 0;
+        
+        
+        
+        
+        Node* itr = head;
+        Node* originalHead = head;
+        Node* newHead;
         Node* lastNode = nullptr;
-        Node* kNode;
-        Node* newNode = head;
-        Node* temp = head;
-        int cnt = 0;
         
-        while( temp )
+        while( itr )
         {
-            cnt++;
-            temp = temp -> next;
+            listSize++;
+            itr = itr -> next;
         }
         
-        if( cnt == k ) return head;
+        k = k % listSize;
+        if( k == 0 or !head -> next ) return head;
         
-        while( i )
-        {
-            if( beforeCnt == k )
+        if( listSize == k ) return head;
+        
+        
+        
+            int beforeCnt = 1;
+            Node* i = head;
+            
+            while( i )
             {
-                break;
+                if( beforeCnt == k )
+                {
+                    break;
+                }
+                else
+                {
+                    beforeCnt++;
+                    i = i -> next;
+                }
             }
-            else
-            {
-                i = i -> next;
-                beforeCnt++;
-            }
-        }
-        
-        
-        
-        
-        while( j )
-        {
-            if( afterCnt == k )
-            {
-                break;
-            }
-            else
+            
+            newHead = i -> next;
+            i -> next = lastNode;
+            
+            Node* j = newHead;
+            while( j -> next )
             {
                 j = j -> next;
-                afterCnt++;
             }
-        }
-        
-        kNode = j;
-        
-        // cout<< j -> data << endl;
-        
-        i -> next = lastNode;
-        
-        while( j -> next )
-        {
-            j = j -> next;
-        }
-        
-        j -> next = newNode;
-        
-        return kNode;
+            
+            j -> next = originalHead;
+            
+            return newHead;
     }
 };
 
@@ -147,6 +133,7 @@ int main() {
         Solution ob;
         head = ob.rotate(head, k);
         printList(head);
+        cout << "~\n";
     }
     return 1;
 }
