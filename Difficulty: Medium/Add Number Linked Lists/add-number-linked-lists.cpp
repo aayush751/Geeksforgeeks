@@ -1,45 +1,54 @@
 //{ Driver Code Starts
-// driver
-
-#include <bits/stdc++.h>
+#include <iostream>
+#include <sstream>
+#include <string>
+#include <vector>
 using namespace std;
 
 /* Linked list Node */
 struct Node {
     int data;
     struct Node* next;
+
     Node(int x) {
         data = x;
         next = NULL;
     }
 };
 
-struct Node* buildList(int size)
-{
-    int val;
-    cin>> val;
-    
+Node* buildList() {
+    vector<int> arr;
+    string input;
+    getline(cin, input);
+    stringstream ss(input);
+    int number;
+    while (ss >> number) {
+        arr.push_back(number);
+    }
+    if (arr.empty()) {
+        return NULL;
+    }
+    int val = arr[0];
+    int size = arr.size();
+
     Node* head = new Node(val);
     Node* tail = head;
-    
-    for(int i=0; i<size-1; i++)
-    {
-        cin>> val;
+
+    for (int i = 1; i < size; i++) {
+        val = arr[i];
         tail->next = new Node(val);
         tail = tail->next;
     }
-    
+
     return head;
 }
 
-void printList(Node* n)
-{
-    while(n)
-    {
-        cout<< n->data << " ";
+void printList(Node* n) {
+    while (n) {
+        cout << n->data << " ";
         n = n->next;
     }
-    cout<< endl;
+    cout << endl;
 }
 
 
@@ -57,129 +66,106 @@ struct Node {
 
 */
 
-class Solution
-{
-    public:
-    //Function to add two numbers represented by linked list.
-    struct Node* addTwoLists(struct Node* num1, struct Node* num2)
-    {
+class Solution {
+  public:
+  
+  void reverseList( Node*& head )
+  {
+      Node* prev = nullptr;
+      Node* curr = head;
+      Node* next;
+      
+      while( curr )
+      {
+          next = curr -> next;
+          curr -> next = prev;
+          prev = curr;
+          curr = next;
+      }
+      
+      head = prev;
+  }
+  
+    Node* addTwoLists(Node* num1, Node* num2) {
         // code here
-        string s1, s2;
+        // sbse phle dono list ko reverse krna hai taki add krne me easy ho
+        reverseList( num1 );
+        reverseList( num2 );
         
-        Node* i = num1;
-        Node* j = num2;
-        
-        while( i )
-        {
-            string ch = to_string( i -> data );
-            s1 += ch;
-            i = i -> next;
-        }
-        
-        while( j )
-        {
-            string temp = to_string( j -> data) ;
-            s2 += temp;
-            j = j -> next;
-        }
-        
-        int idx = 0;
-        
-        while( s1[idx] == '0' )
-        {
-            idx++;
-        }
-        
-        s1 = s1.substr(idx);
-        
-        idx = 0;
-        
-        while( s2[idx] == '0' )
-        {
-            idx++;
-        }
-        
-        s2 = s2.substr(idx);
-        
-        int n = s1.size(), m = s2.size();
-        
-        if( n == 0 and m == 0 )
-        {
-            Node* zero = new Node(0);
-            return zero;
-        }
-        int itr_s1 = n - 1, itr_s2 = m - 1;
+        Node* itr1 = num1;
+        Node* itr2 = num2;
+        Node* tail = nullptr;
         
         int carry = 0;
         
-        string finalAns;
-        while( itr_s1 > -1 and itr_s2 > -1 )
+        while( itr1 and itr2 )
         {
-            finalAns.push_back( ((carry + s1[itr_s1] - '0' + s2[itr_s2] - '0') % 10 ) + '0' );
-            carry = (carry + s1[itr_s1] - '0' + s2[itr_s2] - '0') / 10;
-            itr_s1--;
-            itr_s2--;
+            int nodeValue = itr1 -> data + itr2 -> data + carry;
+            itr1 -> data = nodeValue % 10;
+            carry = nodeValue / 10;
+            tail = itr1;
+            itr1 = itr1 -> next;
+            itr2 = itr2 -> next;
         }
         
-        while( itr_s1 > -1 )
+        if( itr1 == nullptr )
         {
-            finalAns.push_back( (( carry + s1[itr_s1] - '0' ) % 10) + '0' );
-            carry = ( carry + s1[itr_s1] - '0' ) / 10;
-            itr_s1--;
+            tail -> next = itr2;
         }
         
-        while( itr_s2 > -1 )
+        while( itr1 )
         {
-            finalAns.push_back( ((carry + s2[itr_s2] - '0') % 10 ) + '0' );
-            carry = (carry + s2[itr_s2] - '0') / 10;
-            itr_s2--;
+            int nodeValue = itr1 -> data + carry;
+            itr1 -> data = nodeValue % 10;
+            carry = nodeValue / 10;
+            tail = itr1;
+            itr1 = itr1 -> next;
+        }
+        
+        while( itr2 )
+        {
+            int nodeValue = itr2 -> data + carry;
+            itr2 -> data = nodeValue % 10;
+            carry = nodeValue / 10;
+            tail = itr2;
+            itr2 = itr2 -> next;
         }
         
         if( carry )
         {
-            finalAns.push_back( carry + 48 );
+            Node* carryNode = new Node( carry );
+            tail -> next = carryNode;
+            tail = tail -> next;
         }
         
+        reverseList( num1 );
         
-        // cout<< finalAns;
-        // return nullptr;
+        Node* zeroNode = num1;
         
-        reverse( begin(finalAns), end(finalAns) );
-        
-        Node* dummyNode = new Node(0);
-        j = dummyNode;
-        for(int i = 0; i < finalAns.size(); i++ )
+        while( zeroNode -> data == 0 )
         {
-            int insert_value = finalAns[i] - 48;
-            Node* temp = new Node( insert_value );
-            j -> next = temp;
-            j = j -> next;
+            zeroNode = zeroNode -> next;
         }
         
-        return dummyNode ->next;
-
+        return zeroNode;
     }
 };
 
 
 //{ Driver Code Starts.
 
-int main()
-{
+int main() {
     int t;
-    cin>>t;
-    while(t--)
-    {
-        int n, m;
-        
-        cin>>n;
-        Node* num1 = buildList(n);
-        
-        cin>>m;
-        Node* num2 = buildList(m);
+    cin >> t;
+    cin.ignore(); // To ignore the newline character after the integer input
+
+    while (t--) {
+        Node* num1 = buildList();
+        Node* num2 = buildList();
         Solution ob;
-        Node* res = ob.addTwoLists(num1,num2);
+        Node* res = ob.addTwoLists(num1, num2);
         printList(res);
+        cout << "~" << endl;
     }
     return 0;
 }
