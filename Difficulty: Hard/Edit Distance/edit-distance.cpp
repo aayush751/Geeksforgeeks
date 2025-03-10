@@ -1,56 +1,53 @@
 //{ Driver Code Starts
+// Initial Template for C++
 #include <bits/stdc++.h>
 using namespace std;
 
 
 // } Driver Code Ends
+
 class Solution {
   public:
-    int editDistance(string str1, string str2) {
-        // Code here
-        int m = str1.size();
-        int n = str2.size();
-        vector< vector< int > > dp(m + 1, vector<int> (n + 1) );
-        
-        for (int i = 0; i <= m; ++i) 
-        {
-            dp[i][0] = i;
+    // Function to compute the edit distance between two strings
+     int dp[1001][1001];
+    int solve(string& s1, string& s2,int i,int j){
+        //base case
+        if(i==s1.length()) return s2.length()-j;
+        if(j==s2.length()) return s1.length()-i;
+        //recursive case
+        if(dp[i][j]!=-1) return dp[i][j];
+        if(s1[i]==s2[j]) return dp[i][j]= solve(s1,s2,i+1,j+1);
+        else{
+            int insert=1+solve(s1,s2,i,j+1);
+            int dele=1+ solve(s1,s2,i+1,j);
+            int replace=1+ solve(s1,s2,i+1,j+1);
+            return dp[i][j]=  min({insert,dele,replace});
         }
-        
-        for (int j = 0; j <= n; ++j) 
-        {
-            dp[0][j] = j;
-        }
-    
-        for (int i = 1; i <= m; ++i) 
-        {
-            for (int j = 1; j <= n; ++j) 
-            {
-                if (str1[i - 1] == str2[j - 1]) 
-                {
-                    dp[i][j] = dp[i - 1][j - 1];
-                } 
-                else 
-                {
-                    dp[i][j] = min( {dp[i - 1][j] + 1, dp[i][j - 1] + 1, dp[i - 1][j - 1] + 1} );
-                } 
-            }
-        }
-    
-        return dp[m][n];
+    }
+    int editDistance(string& s1, string& s2) {
+        //CodeGenius
+        memset(dp,-1,sizeof(dp));
+        return solve(s1,s2,0,0);
     }
 };
 
+
 //{ Driver Code Starts.
+
 int main() {
+
     int T;
     cin >> T;
+    cin.ignore();
     while (T--) {
-        string s, t;
-        cin >> s >> t;
+        string s1;
+        getline(cin, s1);
+        string s2;
+        getline(cin, s2);
         Solution ob;
-        int ans = ob.editDistance(s, t);
+        int ans = ob.editDistance(s1, s2);
         cout << ans << "\n";
+        cout << "~" << endl;
     }
     return 0;
 }
