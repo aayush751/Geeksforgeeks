@@ -1,10 +1,11 @@
 //{ Driver Code Starts
-//Initial Template for C++
+// Initial Template for C++
 
 #include <bits/stdc++.h>
 using namespace std;
 
-struct Node {
+class Node {
+  public:
     int data;
     Node *left;
     Node *right;
@@ -14,7 +15,6 @@ struct Node {
         left = right = NULL;
     }
 };
-
 
 Node *buildTree(string str) {
     // Corner Case
@@ -80,10 +80,10 @@ Node *buildTree(string str) {
 
 
 // } Driver Code Ends
-//User function Template for C++
 
 /*
-struct Node {
+class Node {
+  public:
     int data;
     Node *left;
     Node *right;
@@ -96,125 +96,97 @@ struct Node {
 */
 class Solution {
   public:
-    
-    
-    void solve( Node* root, unordered_map< Node*, Node* > &mp )
-    {
-        // es function me ye kr rhe hain ki sare child k parent ko value bna rhe hain and child ko key bna rhe hain
-        queue< Node* > q;
-        q.push( root );
-        
-        while( !q.empty() )
-        {
-            int size =  q.size();
-            
-            for(int i = 0; i < size; i++ )
-            {
-                Node* curr = q.front();
-                q.pop();
-                
-                if( curr -> left )
-                {
-                    mp[curr -> left] = curr;
-                    q.push( curr -> left );
-                }
-                
-                if( curr -> right )
-                {
-                    mp[curr -> right] = curr;
-                    q.push( curr -> right );
-                }
-            }
-        }
-    }
-    
-    Node* findTarget( Node* root, int target )
-    {
-          if (!root) return nullptr;
-    if (root->data == target) return root;
-    Node* left = findTarget(root->left, target);
-    if (left) return left;
-    return findTarget(root->right, target);
-    }
-    
-    
-    int minTime(Node* root, int target) 
-    {
-        // Your code goes here
-        if (!root) return 0;
+    int minTime(Node* root, int target) {
+        // code here
+        queue<Node*> que;
 
-    std::unordered_map<Node*, Node*> parent_map;
-    solve(root, parent_map);
+        que.push(root);
 
-    Node* targetNode = findTarget(root, target);
-    if (!targetNode) return 0; // Target not found
+        unordered_map<Node*, Node*> parent; // To store parent of each node
+        parent[root] = nullptr;
 
-    std::unordered_map<Node*, bool> visited;
-    std::queue<Node*> q;
-    q.push(targetNode);
-    visited[targetNode] = true;
-    int time = 0;
+        Node* tar = nullptr; // Pointer to store target node
 
-    while (!q.empty()) {
-        int size = q.size();
-        bool isBurning = false;
+        while (!que.empty()) {
+            Node* curr = que.front();
+            que.pop();
 
-        for (int i = 0; i < size; i++) {
-            Node* current = q.front();
-            q.pop();
-
-            // Check left child
-            if (current->left && !visited[current->left]) {
-                isBurning = true;
-                visited[current->left] = true;
-                q.push(current->left);
+            // Locate the target node
+            if (curr->data == target) {
+                tar = curr;
             }
 
-            // Check right child
-            if (current->right && !visited[current->right]) {
-                isBurning = true;
-                visited[current->right] = true;
-                q.push(current->right);
+            // Map left child to parent
+            if (curr->left) {
+                que.push(curr->left);
+                parent[curr->left] = curr;
             }
 
-            // Check parent
-            if (parent_map[current] && !visited[parent_map[current]]) {
-                isBurning = true;
-                visited[parent_map[current]] = true;
-                q.push(parent_map[current]);
+            // Map right child to parent
+            if (curr->right) {
+                que.push(curr->right);
+                parent[curr->right] = curr;
             }
         }
 
-        if (isBurning) time++;
-    }
+        // Step 2: Simulate burning using BFS from target node
+        unordered_map<Node*, bool> visited; // Track visited nodes to prevent re-burning
+        int t = -1;                         // Time counter
+        que.push(tar);                      // Start BFS from target node
 
-    return time;
+        while (!que.empty()) {
+            int n = que.size(); // Nodes burning at current second
+
+            while (n--) {
+                Node* curr = que.front();
+                que.pop();
+
+                visited[curr] = true; // Mark current node as burned
+
+                // Spread to left child
+                if (curr->left && !visited[curr->left]) {
+                    que.push(curr->left);
+                }
+
+                // Spread to right child
+                if (curr->right && !visited[curr->right]) {
+                    que.push(curr->right);
+                }
+
+                // Spread to parent
+                if (parent[curr] && !visited[parent[curr]]) {
+                    que.push(parent[curr]);
+                }
+            }
+            t++; // Increment time after processing current level
+        }
+        return t;
     }
 };
 
+
 //{ Driver Code Starts.
 
-int main() 
-{
+int main() {
     int tc;
     scanf("%d ", &tc);
-    while (tc--) 
-    {    
+    while (tc--) {
         string treeString;
         getline(cin, treeString);
         // cout<<treeString<<"\n";
         int target;
-        cin>>target;
+        cin >> target;
         // cout<<target<<"\n";
 
         Node *root = buildTree(treeString);
         Solution obj;
-        cout<<obj.minTime(root, target)<<"\n"; 
+        cout << obj.minTime(root, target) << "\n";
 
         cin.ignore();
 
+        cout << "~"
+             << "\n";
     }
-
 
     return 0;
 }
