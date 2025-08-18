@@ -1,72 +1,14 @@
-//{ Driver Code Starts
-#include <bits/stdc++.h>
-using namespace std;
-
-
-// } Driver Code Ends
-// User function Template for C++
 class Solution {
   public:
-    // Function to find hIndex
-    int hIndex(vector<int>& c ) {
+    int hIndex(vector<int>& arr ) {
         // code here
-        int n = c.size();
-        
-        vector< int > result( n + 1, 0 );
-        
-        for(int i = 0; i < n; i++ )
-        {
-            if( c[i] >= n )
-            {
-                result[n]++;
-            }
-            else
-            {
-                result[c[i]]++;
-            }
+        sort(arr.begin(), arr.end());
+        int ans=0;
+        int n=arr.size();
+        for(int i=0;i<n;i++){
+            int num= n-i;
+            ans=max(ans, min(num, arr[i]));
         }
-        
-        int H_Index = n;
-        int num = result[n];
-        
-        while( num < H_Index )
-        {
-            H_Index--;
-            num += result[H_Index];
-        }
-        
-        return H_Index;
+        return ans;
     }
 };
-
-//{ Driver Code Starts.
-
-int main() {
-
-    int test_cases;
-    cin >> test_cases;
-    cin.ignore();
-    while (test_cases--) {
-        string input;
-        vector<int> arr;
-
-        // Read the array from input line
-        getline(cin, input);
-        stringstream ss(input);
-        int number;
-        while (ss >> number) {
-            arr.push_back(number);
-        }
-
-        // Solution instance to invoke the function
-        Solution ob;
-        int result = ob.hIndex(arr);
-
-        cout << result << endl;
-
-        cout << "~" << endl;
-    }
-    return 0;
-}
-
-// } Driver Code Ends
