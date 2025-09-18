@@ -1,6 +1,6 @@
 class Solution {
   public:
-    vector<int> nextLargerElement(vector<int> &arr) {
+    vector<int> nextGreater(vector<int> &arr) {
         // code here
         int         n = arr.size();             // Size of the array
         vector<int> result(n, -1);              // Result initialized to -1s
@@ -20,6 +20,6 @@ class Solution {
                 st.push(idx);                   // Add index to stack
             }
         }
-        return result;  
+        return result;
     }
 };
