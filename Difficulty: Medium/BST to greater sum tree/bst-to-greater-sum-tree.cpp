@@ -14,10 +14,9 @@ class Node {
 
 class Solution {
   public:
-  
-   int sum = 0;
+    int sum = 0;
+
     void transformTree(Node *root) {
-        // code here
         if (!root) return;
 
         // Traverse right subtree first (greater values)
