@@ -1,6 +1,6 @@
 class Solution {
   public:
-     bool check(vector<int>& heights, vector<int>& cost, int mid) {
+    bool check(vector<int>& heights, vector<int>& cost, int mid) {
         long long costMid   = 0;
         long long costMidP1 = 0;
 
@@ -11,10 +11,10 @@ class Solution {
 
         return costMid < costMidP1;  // true if mid gives smaller cost than mid+1 (move left)
     }
-    
+  
     int minCost(vector<int>& heights, vector<int>& cost) {
-        // Define search boundaries for binary search
-        int low  = *min_element(heights.begin(), heights.end());
+        // code here
+          int low  = *min_element(heights.begin(), heights.end());
         int high = *max_element(heights.begin(), heights.end());
 
         int targetH = 0;  // best height found
