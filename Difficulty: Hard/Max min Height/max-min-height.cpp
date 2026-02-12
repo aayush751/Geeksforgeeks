@@ -1,7 +1,6 @@
 class Solution {
   public:
-  
-     bool possible(int n,vector<int> a,int k,int w,int mid){
+   bool possible(int n,vector<int> a,int k,int w,int mid){
         for(int i=0;i<n;i++){
             if(a[i]<mid){
                 int temp = mid-a[i];
@@ -16,12 +15,9 @@ class Solution {
         return true;
     }
   
-    
-    
-    
     int maxMinHeight(vector<int> &a, int k, int w) {
         // code here
-         int mn=INT_MAX,mx;
+        int mn=INT_MAX,mx;
          int n = a.size();
         for(int i=0;i<n;i++)mn=min(mn,a[i]);
         mx=mn+k;
