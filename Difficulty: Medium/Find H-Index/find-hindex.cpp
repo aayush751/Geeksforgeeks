@@ -1,14 +1,19 @@
 class Solution {
   public:
-    int hIndex(vector<int>& arr ) {
+    int hIndex(vector<int>& citations) {
         // code here
-        sort(arr.begin(), arr.end());
-        int ans=0;
-        int n=arr.size();
+        int n=citations.size();
+        vector<int> freq(n+1);
         for(int i=0;i<n;i++){
-            int num= n-i;
-            ans=max(ans, min(num, arr[i]));
+            if(citations[i]>=n) freq[n]++;
+            else freq[citations[i]]++;
         }
-        return ans;
+        int Hindex=n;
+        int num=freq[n];
+        while(num<Hindex){
+            Hindex--;
+            num+=freq[Hindex];
+        }
+        return Hindex;
     }
 };
