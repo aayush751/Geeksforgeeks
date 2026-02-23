@@ -1,66 +1,22 @@
-//{ Driver Code Starts
-// Initial template for C++
-
-#include <bits/stdc++.h>
-using namespace std;
-
-
-// } Driver Code Ends
-// User function template in C++
-
 class Solution {
   public:
-    // Function to return the count of number of elements in union of two arrays.
-    int findUnion(vector<int>& a, vector<int>& b) {
+    vector<int> findUnion(vector<int>& a, vector<int>& b) {
         // code here
-        unordered_set< int > st;
-        
-        for( auto ele: a )
-        {
-            st.insert( ele );
-        }
-        
-        for( auto ele: b )
-        {
-            st.insert( ele );
-        }
-        
-        return st.size();
+        unordered_set<int> st;
+
+    // Insert elements of first array
+    for (int x : a) {
+        st.insert(x);
+    }
+
+    // Insert elements of second array
+    for (int x : b) {
+        st.insert(x);
+    }
+
+    // Move set elements to result vector
+    vector<int> result(st.begin(), st.end());
+
+    return result; 
     }
 };
-
-//{ Driver Code Starts.
-
-int main() {
-    int t;
-    cin >> t;
-    cin.ignore(); // Ignore the newline character after reading t
-
-    while (t--) {
-        vector<int> a;
-        vector<int> b;
-
-        string input;
-        // For a
-        getline(cin, input); // Read the entire line for the array elements
-        stringstream ss(input);
-        int number;
-        while (ss >> number) {
-            a.push_back(number);
-        }
-
-        // For b
-        getline(cin, input); // Read the entire line for the array elements
-        stringstream ss2(input);
-        while (ss2 >> number) {
-            b.push_back(number);
-        }
-
-        Solution ob;
-        cout << ob.findUnion(a, b) << endl;
-        cout << '~' << endl;
-    }
-
-    return 0;
-}
-// } Driver Code Ends
