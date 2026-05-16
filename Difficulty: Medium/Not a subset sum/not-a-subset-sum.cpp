@@ -1,46 +1,22 @@
-//{ Driver Code Starts
-// Initial template for C++
-
-#include <bits/stdc++.h>
-using namespace std;
-
-
-// } Driver Code Ends
-// User function template for C++
-
 class Solution {
   public:
-    long long findSmallest(vector<int> &arr) {
-        // Your code goes here.
-        long long ans = 1;
-        for(int x:arr){
-            if(x>ans)return ans;
-            ans+=x;
+    int findSmallest(vector<int> &arr) {
+        // code here.
+        sort(arr.begin(), arr.end());
+        
+        // 'res' tracks the smallest positive integer we cannot form yet
+        long long res = 1; 
+
+        for (int i = 0; i < arr.size(); i++) {
+            // If the current element is strictly greater than res, 
+            // we can't form res. We break out of the loop.
+            if (arr[i] > res) {
+                break;
+            }
+            // Otherwise, add the current element to res
+            res += arr[i];
         }
-        return ans;
+
+        return res;
     }
 };
-
-//{ Driver Code Starts.
-int main() {
-    int t;
-    cin >> t;
-    cin.ignore();
-    while (t--) {
-        string input;
-        getline(cin, input);
-        stringstream ss(input);
-        vector<int> arr;
-        int num;
-        while (ss >> num) {
-            arr.push_back(num);
-        }
-
-        Solution ob;
-        auto ans = ob.findSmallest(arr);
-        cout << ans << "\n";
-    }
-    return 0;
-}
-
-// } Driver Code Ends
